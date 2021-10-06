@@ -4,9 +4,9 @@ import { Container, BannerItem, Title, RateContainer, Rate } from './styles';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-function SliderItem({ data }) {
+function SliderItem({ data, navigatePage }) {
     return (
-        <Container activeOpacity={0.7} onPress={() => alert('TESTEE')}>
+        <Container activeOpacity={0.7} onPress={() => navigatePage(data)}>
             <BannerItem
                 resizeMethod="resize"
                 source={{ uri: `https://image.tmdb.org/t/p/original/${data.poster_path}` }}
