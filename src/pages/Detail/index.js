@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, Modal } from 'react-native';
-import { Container, Header, HeaderButton, Banner, ButtonLink, Title, ContentArea, Rate, LitsGenres, Description } from './style';
+import {
+    Container,
+    Header,
+    HeaderButton,
+    Banner,
+    ButtonLink,
+    Title,
+    ContentArea,
+    Rate,
+    LitsGenres,
+    Description,
+    ContainerLoading,
+    Loading
+} from './style';
 
 import Icon from 'react-native-vector-icons/Feather';
 import Star from 'react-native-vector-icons/Ionicons';
@@ -20,6 +33,7 @@ function Detail() {
 
     const [movie, setMovie] = useState({});
     const [openLink, setOpenLink] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         let isActive = true;
@@ -37,6 +51,7 @@ function Detail() {
                 if (isActive) {
                     setMovie(response.data);
                     // console.log(response.data);
+                    setLoading(false);
                 }
             } catch (error) {
                 console.log(error)
@@ -52,6 +67,14 @@ function Detail() {
         }
 
     }, []);
+
+    if (loading) {
+        return (
+            <ContainerLoading>
+                <Loading size="large" color="#FFF" />
+            </ContainerLoading>
+        )
+    }
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
