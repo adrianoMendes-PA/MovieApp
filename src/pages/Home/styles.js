@@ -42,9 +42,7 @@ export const Title = styled.Text`
     padding-right: 14px;
 `;
 
-export const BannerButton = styled.TouchableOpacity`
-
-`;
+export const BannerButton = styled.TouchableOpacity``;
 
 export const Banner = styled.Image`
     height: 150px;
