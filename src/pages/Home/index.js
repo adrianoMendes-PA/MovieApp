@@ -32,6 +32,7 @@ function Home() {
     const [topMovies, setTopMovies] = useState([]);
     const [bannerMovie, setBannerMovie] = useState({});
     const [loading, setLoading] = useState(true);
+    const [input, setInput] = useState('');
 
     const navigation = useNavigation();
 
@@ -94,6 +95,12 @@ function Home() {
         navigation.navigate('Detail', { id: item.id })
     }
 
+    function handleSearchMovie() {
+        if (input === '') return;
+        navigation.navigate('Search', { name: input })
+        setInput('');
+    }
+
     if (loading) {
         return (
             <ContainerLoading>
@@ -111,9 +118,11 @@ function Home() {
                 <Input
                     placeholder="Ex: Liga da Justiça"
                     placeholderTextColor='#ddd'
+                    value={input}
+                    onChangeText={(t) => setInput(t)}
                 />
 
-                <SearchButton>
+                <SearchButton onPress={handleSearchMovie}>
                     <Icon name='ios-search' size={30} color='#FFF' />
                 </SearchButton>
             </SearchContainer>
