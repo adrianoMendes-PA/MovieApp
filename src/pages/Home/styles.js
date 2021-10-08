@@ -56,3 +56,12 @@ export const SliderMovie = styled.FlatList`
     height: 250px;
     padding: 0 14px;
 `;
+
+export const ContainerLoading = styled.SafeAreaView`
+    background-color: #141A29;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const Loading = styled.ActivityIndicator``;
