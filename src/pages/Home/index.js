@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, ActivityIndicator } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 
 // ESTILOS
 import {
@@ -10,7 +10,9 @@ import {
     Title,
     BannerButton,
     Banner,
-    SliderMovie
+    SliderMovie,
+    ContainerLoading,
+    Loading
 } from './styles';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -94,9 +96,10 @@ function Home() {
 
     if (loading) {
         return (
-            <Container>
-                <ActivityIndicator size="large" color="#FFF" />
-            </Container>
+            <ContainerLoading>
+                <Title>MovieApp</Title>
+                <Loading size="large" color="#FFF" />
+            </ContainerLoading>
         )
     }
 
