@@ -15,8 +15,7 @@ import {
     Loading
 } from './style';
 
-import Icon from 'react-native-vector-icons/Feather';
-import Star from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import api, { key } from '../../services/api';
@@ -24,6 +23,8 @@ import api, { key } from '../../services/api';
 import Stars from 'react-native-stars';
 import Genres from "../../components/Genres";
 import ModalLink from "../../components/ModalLink";
+
+import { saveMovie, hasMovie, deleteMovie } from '../../utils/storage';
 
 
 function Detail() {
@@ -34,6 +35,7 @@ function Detail() {
     const [movie, setMovie] = useState({});
     const [openLink, setOpenLink] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [favoritedMovie, setFavoritedMovie] = useState(false);
 
     useEffect(() => {
         let isActive = true;
@@ -50,6 +52,10 @@ function Detail() {
 
                 if (isActive) {
                     setMovie(response.data);
+
+                    const isFavorite = await hasMovie(response.data);
+                    setFavoritedMovie(isFavorite);
+
                     // console.log(response.data);
                     setLoading(false);
                 }
@@ -76,23 +82,45 @@ function Detail() {
         )
     }
 
+    async function handleFavoriteMovie(movie) {
+
+        if (favoritedMovie) {
+            await deleteMovie(movie.id);
+            setFavoritedMovie(false);
+            alert('Filme removido da sua lista de favoritos!');
+        } else {
+            await saveMovie('@MovieApp', movie);
+            setFavoritedMovie(true);
+            alert('Filme salvo na sua lista de favoritos!');
+        }
+    }
+
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <Container>
                 <Header>
                     <HeaderButton onPress={() => navigation.goBack()}>
                         <Icon
-                            name="arrow-left"
+                            name="arrow-back"
                             size={28}
                             color="#FFF"
                         />
                     </HeaderButton>
-                    <HeaderButton>
-                        <Icon
-                            name="bookmark"
-                            size={28}
-                            color="#FFF"
-                        />
+
+                    <HeaderButton onPress={() => handleFavoriteMovie(movie)}>
+                        {favoritedMovie ? (
+                            <Icon
+                                name="bookmark"
+                                size={28}
+                                color="#FFF"
+                            />
+                        ) : (
+                            <Icon
+                                name="bookmark-outline"
+                                size={28}
+                                color="#FFF"
+                            />
+                        )}
                     </HeaderButton>
                 </Header>
                 <Banner
@@ -116,9 +144,9 @@ function Detail() {
                         count={10}
                         half={true}
                         starSize={20}
-                        fullStar={<Star name="md-star" size={20} color="#E7A74e" />}
-                        emptyStar={<Star name="md-star-outline" size={20} color="#E7A74e" />}
-                        halfStar={<Star name="md-star-half" size={20} color="#E7A74e" />}
+                        fullStar={<Icon name="md-star" size={20} color="#E7A74e" />}
+                        emptyStar={<Icon name="md-star-outline" size={20} color="#E7A74e" />}
+                        halfStar={<Icon name="md-star-half" size={20} color="#E7A74e" />}
                         disable={true}
                     />
                     <Rate>{movie.vote_average}/10</Rate>
